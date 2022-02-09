@@ -1,3 +1,4 @@
-Expr: [2, 3, +]; Eval:XDD
-Expr: [2, 3, 4, +, *]; Eval:XDD
-Expr: [2, 4, +, 7, *, 3, 9, 5, -, *, +]; Eval:XDD
+Expr: [2, 3, +]; Eval: 5
+Expr: [2, 3, 4, +, *]; Eval: 14
+Expr: [2, 4, +, 7, *, 3, 9, 5, -, *, +]; Eval: 54
+Expr: [3, 5, +, 2, -]; Eval: 6

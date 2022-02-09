@@ -104,9 +104,11 @@ public class InfijoAPostfijoApp {
                 // System.out.println(salida);
 
                 // Inciso b
-                String operacionRealizada = "XDD";
 
-                lineaTexto = "Expr: " + convertirPostfijo(entrada) + "; Eval:" + operacionRealizada + "\n";
+                // System.out.println(realizarOperacion(convertirPostfijo(entrada)));
+
+                lineaTexto = "Expr: " + convertirPostfijo(entrada) + "; Eval: "
+                        + realizarOperacion(convertirPostfijo(entrada)) + "\n";
                 bw.write(lineaTexto);
             }
             bw.flush();
@@ -116,37 +118,6 @@ public class InfijoAPostfijoApp {
             e.printStackTrace();
         } catch (EmptyStackException e) {
             System.out.println("LOL");
-        }
-    }
-
-    // Declara el nivel de prioridad de los operadores
-    public int prioridad(char valor) {
-        switch (valor) {
-            case '*':
-                return 2;
-            case '+':
-                return 1;
-            case '-':
-                return 1;
-            case '/':
-                return 2;
-            case '^':
-                return 3;
-        }
-        return 0;
-    }
-
-    public int evaluacion(char E) {
-        if (E == ';') {
-            return 5;
-        } else if (E != '^' && E != '+' && E != '-' && E != '*' && E != '/' && E != ')' && E != '(') { // es un número
-            return 1;
-        } else if (E == '(') {
-            return 2;
-        } else if (E == ')') {
-            return 3;
-        } else { // Es un operador
-            return 4;
         }
     }
 
@@ -202,6 +173,80 @@ public class InfijoAPostfijoApp {
         // System.out.println("POSTFIA " + w);
         // System.out.println(postfija);
         return postfija;
+    }
+
+    // Declara el nivel de prioridad de los operadores
+    public int prioridad(char valor) {
+        switch (valor) {
+            case '*':
+                return 2;
+            case '+':
+                return 1;
+            case '-':
+                return 1;
+            case '/':
+                return 2;
+            case '^':
+                return 3;
+        }
+        return 0;
+    }
+
+    public int evaluacion(char E) {
+        if (E == ';') {
+            return 5;
+        } else if (E != '^' && E != '+' && E != '-' && E != '*' && E != '/' && E != ')' && E != '(') { // es un número
+            return 1;
+        } else if (E == '(') {
+            return 2;
+        } else if (E == ')') {
+            return 3;
+        } else { // Es un operador
+            return 4;
+        }
+    }
+
+    // Problema 1 Inciso 2
+    public long realizarOperacion(LinkedList<Character> expresionPostfija) {
+        ArrayList<String> postAL = new ArrayList<String>();
+        for (Character character : expresionPostfija) {
+            postAL.add(character.toString());
+        }
+
+        String[] post = postAL.toArray(new String[postAL.size()]);
+        Stack<String> E = new Stack<String>();
+        Stack<String> P = new Stack<String>();
+
+        for (int i = post.length - 1; i >= 0; i--) {
+            E.push(post[i]);
+        }
+
+        String operadores = "+-*/%";
+        while (!E.isEmpty()) {
+            if (operadores.contains("" + E.peek())) {
+                P.push(evaluarOperaciones(E.pop(), P.pop(), P.pop()) + "");
+            } else {
+                P.push(E.pop());
+            }
+        }
+
+        return Long.parseLong(P.peek());
+    }
+
+    private static int evaluarOperaciones(String op, String n2, String n1) {
+        int num1 = Integer.parseInt(n1);
+        int num2 = Integer.parseInt(n2);
+        if (op.equals("+"))
+            return (num1 + num2);
+        if (op.equals("-"))
+            return (num1 - num2);
+        if (op.equals("*"))
+            return (num1 * num2);
+        if (op.equals("/"))
+            return (num1 / num2);
+        if (op.equals("%"))
+            return (num1 % num2);
+        return 0;
     }
 
 }
